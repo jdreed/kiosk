@@ -2,8 +2,8 @@ Source: debathena-kiosk
 Section: debathena/web
 Priority: extra
 Maintainer: Debathena Project <debathena@mit.edu>
-Build-Depends: @cdbs@, debathena-gdm
-Standards-Version: 3.9.1
+Build-Depends: cdbs, debhelper, dh-buildinfo, debathena-gdm
+Standards-Version: 3.9.3
 
 Package: debathena-kiosk
 X-Debathena-Build-For: lucid natty precise
