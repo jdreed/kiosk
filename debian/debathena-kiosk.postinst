@@ -22,10 +22,18 @@ case "$1" in
     configure)
         # Add the kiosk user.
         user=kiosk@mit
+	# note that usermod -m is rename(2) and will not
+	# do the equivalent of mkdir -p
+	homedir=/var/lib/debathena-kiosk-home
         if ! getent passwd $user >/dev/null; then
-            adduser --system --force-badname $user
+            adduser --system --force-badname \
+		--home "$homedir" $user
+	elif dpkg --compare-versions "$2" lt 1.5~; then
+	    usermod --move-home --home "$homedir" $user
         fi
-	chmod 0440 /etc/sudoers.d/debathena-kiosk-sudoers
+	adduser $user nopasswdlogin
+	cp -f /usr/share/debathena-kiosk/dot-xsessionrc "${homedir}/.xsessionrc"
+	chown "$user" "${homedir}/.xsessionrc"
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)

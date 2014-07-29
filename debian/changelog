@@ -1,3 +1,16 @@
+debathena-kiosk (1.5) unstable; urgency=low
+
+  * Don't start a VT anymore; behave as a normal session
+  * Drop support for r-kiosk because it has sufficiently bitrotted so as
+    to be useless
+  * Move the kiosk user's homedir to /var/lib so as not to have to
+    special-case snapshot-run to not remove /home
+  * Update Build-For field
+  * Drop support for gdm
+  * Convert to dh7
+
+ -- Jonathan Reed <jdreed@mit.edu>  Wed, 30 Jul 2014 10:30:33 -0400
+
 debathena-kiosk (1.4.10) unstable; urgency=low
 
   [ Jonathan Reed ]

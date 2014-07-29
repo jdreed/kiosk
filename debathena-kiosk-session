@@ -1,0 +1,51 @@
+#!/bin/sh
+
+# This is the xsession script for the kiosk user.
+
+datadir=/usr/share/debathena-kiosk
+user="kiosk@mit"
+
+# Sanity check.  The greeter will hide it anyway, but
+# we really don't want to scribble over the user's $HOME by accident
+if [ "$(id -nu)" != "$user" ]; then
+    zenity --info --title="Session Not Available" --text="This session is not available.  Please select another session type."
+    exit 0
+fi
+
+# File with preferences to set in the firefox profile.
+prefs="$datadir/prefs.js"
+
+# User chrome (UI customizations) file.
+chrome="$datadir/userChrome.css"
+
+cd || exit 1
+
+# Run a window manager so that firefox fullscreen mode works.
+metacity --sm-disable &
+
+# Create a new firefox profile.
+rm -rf .mozilla
+firefox -CreateProfile default > /dev/null || exit 1
+profdir=$(find .mozilla/firefox -type d -name \*.default)
+
+# Apply our preference settings and UI customizations.
+cat "$prefs" >> "$profdir/prefs.js" || exit 1
+mkdir -p "$profdir/chrome"
+cp "$chrome" "$profdir/chrome/userChrome.css" || exit 1
+
+# Launch firefox.
+if [ -x /usr/bin/bugme ]; then
+    bugme --fatal --corner SE firefox &
+    pid=$!
+    # Warn the user that printing is wrong.
+    # And do it after firefox starts, because otherwise the notification
+    # ends up under it
+    notify-send -t 5000 "No Printing" "You will not be able to print from this browser session.  Any print jobs will be discarded."
+    wait $pid
+
+else
+    zenity --no-wrap --error --text="Sorry, unable to launch kiosk browser.\nThis workstation may be misconfigured."
+fi
+
+# Clean up.
+rm -rf .mozilla

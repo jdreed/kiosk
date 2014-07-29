@@ -1,7 +1,4 @@
 #!/usr/bin/make -f
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-
-install/debathena-kiosk::
-	dh_install debian/debathena-kiosk.desktop usr/share/gdm/autostart/LoginWindow
-
+%:
+	dh $@

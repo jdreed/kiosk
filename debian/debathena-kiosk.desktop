@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
 Name=Kiosk mode browser
-TryExec=/usr/lib/debathena-kiosk/gdm-launch-kiosk
-Exec=/usr/lib/debathena-kiosk/gdm-launch-kiosk
-OnlyShowIn=GNOME;
+TryExec=/usr/lib/debathena-kiosk/debathena-kiosk-session
+Exec=/usr/lib/debathena-kiosk/debathena-kiosk-session
+Comment=Kiosk mode browser
